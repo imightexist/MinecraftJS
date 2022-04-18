@@ -1,2 +1,2 @@
 # minecraft-websocket
-a nodejs minecraft bot that uses minecraft-protocol
+a nodejs minecraft server that takes requests from a websocket server
