@@ -1,2 +1,2 @@
-# JSCraft
+# MinecraftJS
 umm in development
