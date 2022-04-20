@@ -1,2 +1,2 @@
 # MinecraftJS
-umm in development
+Webapp
