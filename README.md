@@ -1,2 +1,2 @@
 # MinecraftJS
-Webapp
+Webapp for MinecraftJS
