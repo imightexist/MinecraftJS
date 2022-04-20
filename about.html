@@ -1,0 +1,157 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <title>MinecraftJS | About</title>
+    <script>
+        function decodeCommand(cypher) {
+            var sections = [];
+            var bump = 0;
+            while (sections.length <= 50 && cypher.length >= bump) {
+                var current = cypher.substring(bump);
+                var length = parseInt(current.substring(current.search(/\./) - 2));
+                var paramater = current.substring(length.toString().length + 1, Math.floor(length / 10) + 2 + length);
+                sections[sections.length] = paramater;
+                bump += Math.floor(length / 10) + 3 + length;
+            }
+            sections[sections.length - 1] = sections[sections.length - 1].substring(0, sections[sections.length - 1].length - 1);
+            return sections;
+        }
+        function encodeCommand(cypher) {
+            var command = "";
+            for (var i = 0; i < cypher.length; i++) {
+                var current = cypher[i];
+                command += current.length + "." + current;
+                command += (i < cypher.length - 1 ? "," : ";");
+            }
+            return command;
+        }
+        function play() {
+            let username = document.getElementById('username').value;
+            let proxy = document.getElementById('proxy').value;
+            let server = document.getElementById('server').value;
+            if (window.location.href.endsWith("/index.html")) {
+                window.location = window.location.href.replace('/index.html', '') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
+            } else {
+                window.location = window.location.href + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
+            }
+
+        }
+    </script>
+    <style>
+        body {
+            background-image: url(assets/pano.png)
+        }
+
+        .button {
+            height: 145px;
+            width: 455px;
+            font-size: 70px;
+            color: white;
+            background-image: url(assets/button.png);
+            border: none;
+            object-fit: contain;
+            font-family: 'Minecraft'
+        }
+
+        .button:hover {
+            background-image: url(assets/hover.png)
+        }
+
+        .input {
+            height: 100px;
+            width: 1100px;
+            font-size: 70px;
+            border: none;
+            background-color: #000314;
+            border-color: #262629;
+            color: white;
+            font-family: 'Minecraft'
+        }
+
+        @keyframes splash {
+            0% {
+                font-size: 50px;
+            }
+
+            10% {
+                font-size: 55px;
+            }
+
+            20% {
+                font-size: 60px;
+            }
+
+            30% {
+                font-size: 65px;
+            }
+
+            40% {
+                font-size: 70px;
+            }
+
+            50% {
+                font-size: 75px;
+            }
+
+            60% {
+                font-size: 70px;
+            }
+
+            70% {
+                font-size: 65px;
+            }
+
+            80% {
+                font-size: 60px;
+            }
+
+            90% {
+                font-size: 55px;
+            }
+
+            100% {
+                font-size: 50px;
+            }
+        }
+
+        .splash {
+            font-family:'Minecraft';
+            font-size: 35px;
+        }
+
+        .game {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <img src="assets/logo.png" onclick="alert('Easter Egg')">
+        <br>
+        <p class="splash" style="color:black">
+            This project is a javascript minecraft client for 1.7.10 that connects to a proxy server and sends requests
+            for it to make a minecraft client (using the famous
+            npm package, minecraft-protocol). The server must have online mode off but features that allow a real
+            Minecraft account to use this client might come
+            soon. You can contribute by helping in our <a href="https://discord.gg/Sv8RtYymk8" target="_blank">discord</a> or contribute
+            to our <a href="https://github.com/imightexist/MinecraftJS" target="_blank">Github</a>. I will most likely not make a bedrock version.
+            Eaglercraft was an inspiration for this project but there are some differences. This runs 1.7.10, can interact with real 1.7.10 (cracked)
+            servers with the limitations of needing to connect to a proxy server to connect to minecraft, and the game engine isn't the same
+            (it appears that eaglercraft uses a javascript java runtime while this uses the canvas element)
+        </p>
+        <br>
+        <a href="index.html" class="splash">Go back</a>
+    </center>
+</body>
+
+</html>
