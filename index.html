@@ -34,17 +34,56 @@
             let username = document.getElementById('username').value;
             let proxy = document.getElementById('proxy').value;
             let server = document.getElementById('server').value;
-            if (window.location.href.endsWith("/index.html")){
-                window.location = window.location.href.replace('/index.html','') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
-            }else{
+            setCookie('username',username,100);
+            setCookie('proxy',proxy,100);
+            setCookie('server',server,100);
+            if (window.location.href.endsWith("/index.html")) {
+                window.location = window.location.href.replace('/index.html', '') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
+            } else {
                 window.location = window.location.href + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
             }
-            
         }
-        window.onload = function(){
-            let funny = ['by iexist','mojang dont sue me','haha','6004!','lucky!','collabvm','diamonds!','we beat the dragon!!','whats the purpose of this text again?','6 9','404','not really for demonstrational purposes','2.0'];
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            //default cookies
+            if (cname == 'jappa'){
+                return 'false';
+            }
+            if (cname == 'sprint-key'){
+                return 'Control';
+            }
+        }
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function saveoptions(){
+
+        }
+        function loadoptions(){
+            document.getElementById('jappa').value = "New textures: " + getCookie('jappa');
+            document.getElementById('sprint-key').value = "Sprint Key: " + getCookie('sprint-key');
+        }
+        window.onload = function () {
+            let funny = ['by iexist', 'mojang dont sue me', 'haha', '6004!', 'lucky!', 'collabvm', 'diamonds!', 'we beat the dragon!!', 'whats the purpose of this text again?', '6 9', '404', 'not really for demonstrational purposes', '2.0'];
             let random = Math.floor(Math.random() * (funny.length - 1));
             document.getElementById('splash').innerHTML = funny[random];
+            document.getElementById('username').value = getCookie('username');
+            document.getElementById('proxy').value = getCookie('proxy');
+            document.getElementById('server').value = getCookie('server');
         }
     </script>
     <style>
@@ -60,42 +99,131 @@
             background-image: url(assets/button.png);
             border: none;
             object-fit: contain;
-            font-family:'Minecraft'
+            font-family: 'Minecraft'
         }
 
         .button:hover {
             background-image: url(assets/hover.png)
         }
 
-        .input{
+        .input {
             height: 100px;
             width: 1100px;
             font-size: 45px;
             border: none;
-            background-color:#000314;
-            border-color:#262629;        
-            color:white;
-            font-family:'Minecraft'
+            background-color: #000314;
+            border-color: #262629;
+            color: white;
+            font-family: 'Minecraft'
+        }
+        .input2 {
+            font-size: 30px;
+            border: none;
+            background-color: #000314;
+            border-color: #262629;
+            color: white;
+            font-family: 'Minecraft'
         }
 
         @keyframes splash {
-            0% {font-size:50px;}
-            10% {font-size:55px;}
-            20% {font-size:60px;}
-            30% {font-size:65px;}
-            40% {font-size:70px;}
-            50% {font-size:75px;}
-            60% {font-size:70px;}
-            70% {font-size:65px;}
-            80% {font-size:60px;}
-            90% {font-size:55px;}
-            100% {font-size:50px;}
+            0% {
+                font-size: 50px;
+            }
+
+            10% {
+                font-size: 55px;
+            }
+
+            20% {
+                font-size: 60px;
+            }
+
+            30% {
+                font-size: 65px;
+            }
+
+            40% {
+                font-size: 70px;
+            }
+
+            50% {
+                font-size: 75px;
+            }
+
+            60% {
+                font-size: 70px;
+            }
+
+            70% {
+                font-size: 65px;
+            }
+
+            80% {
+                font-size: 60px;
+            }
+
+            90% {
+                font-size: 55px;
+            }
+
+            100% {
+                font-size: 50px;
+            }
         }
 
         .splash {
             color: yellow;
             font-family: 'Minecraft';
-            font-size:50px;
+            font-size: 50px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #171717;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            color: white
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button2 {
+            font-size: 30px;
+            font-family: 'Minecraft';
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            height: 40px
+        }
+
+        .button2:hover {
+            background-color: #7db5ff
         }
     </style>
 </head>
@@ -114,18 +242,31 @@
         <br><br><br>
         <button class="button" onclick="play()">Play</button>
         <br><br>
-        <button class="button" onclick="">Options</button>
+        <button class="button" onclick="document.getElementById('modal').style.display = 'block'">Options</button>
         <br><br>
-        <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS" target="_blank">Github</a>
+        <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS"
+            target="_blank">Github</a>
         <a class="splash" style="font-size:25px"> | </a>
         <a class="splash" style="font-size:25px" href="https://discord.gg/Sv8RtYymk8" target="_blank">Discord</a>
         <a class="splash" style="font-size:25px"> | </a>
-        <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS-Proxy" target="_blank">Host proxy</a>
+        <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS-Proxy"
+            target="_blank">Host proxy</a>
         <a class="splash" style="font-size:25px"> | </a>
         <a class="splash" style="font-size:25px" href="about.html" target="_blank">Learn more</a>
         <a class="splash" style="font-size:25px"> | </a>
-        <a class="splash" style="font-size:25px">1.7.10 javascript client</a>
+        <a class="splash" style="font-size:25px">1.7.10 javascript client (beta)</a>
     </center>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <bold style="font-size:30px;font-family:'Minecraft'">Options</bold>
+            <span class="modal-close" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
+            <br><br><br>
+            <button class="button2" id="jappa">New Textures: off</button>
+            <br><br>
+            <button class="button2" id="sprint-key">Sprint Key</button>
+            <br><br>
+        </div>
+    </div>
 </body>
 
 </html>
