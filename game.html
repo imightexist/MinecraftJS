@@ -7,6 +7,7 @@
     <link href="http://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
     <title>MinecraftJS | Game</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <script src="assets/three.js"></script>
     <script>
         function decodeCommand(cypher) {
             var sections = [];
@@ -30,24 +31,233 @@
             }
             return command;
         }
+        messages = 0;
         params = new URLSearchParams(window.location.search);
+        function escapeInput(input) {
+            return String(input)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
         window.onload = function () {
             //load the game
-            if (params.get('username').includes('iexist')) {
+            /*if (params.get('username').includes('iexist')) {
                 alert("you cannot have your name include that because impersonation is cringe");
                 history.back();
-            }
+            }*/
             canvas = document.getElementById('game');
             document.getElementById('proxy').innerHTML = "Proxy: " + params.get('proxy');
             document.getElementById('server').innerHTML = "Server IP: " + params.get('server');
             let socket = new WebSocket(params.get('proxy'));
+            socket.onopen = function () {
+                socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.7.10' }]))
+            }
+            socket.onmessage = function (f) {
+                if (messages != 30) { console.log(JSON.parse(f.data)); messages++ }
+                command = JSON.parse(f.data);
+                if (command[0] == "read"){
+                    if (command[2].name == "chat"){
+                        msg = JSON.parse(command[1].message)
+                        console.log(JSON.parse(command[1].message))
+                        element = document.createElement('li');
+                        element.classList.add("message-item");
+                        if (msg.extra == undefined){
+                            let part;
+                            let a = msg;
+                            if (msg.italic){
+                                part = document.createElement('i')
+                            }else{
+                                part = document.createElement('a')
+                            }
+                            if (a.color != undefined){
+                                if (a.color == "black"){
+                                    part.style.color = "#000000"
+                                }
+                                if (a.color == "dark_blue"){
+                                    part.style.color = "#0000AA"
+                                }
+                                if (a.color == "dark_green"){
+                                    part.style.color = "#00AA00"
+                                }
+                                if (a.color == "dark_aqua"){
+                                    part.style.color = "#00AAAA"
+                                }
+                                if (a.color == "dark_red"){
+                                    part.style.color = "#AA0000"
+                                }
+                                if (a.color == "dark_purple"){
+                                    part.style.color = "#AA00AA"
+                                }
+                                if (a.color == "gold"){
+                                    part.style.color = "#FFAA00"
+                                }
+                                if (a.color == "gray"){
+                                    part.style.color = "#AAAAAA"
+                                }
+                                if (a.color == "dark_gray"){
+                                    part.style.color = "#555555"
+                                }
+                                if (a.color == "blue"){
+                                    part.style.color = "#5555FF"
+                                }
+                                if (a.color == "green"){
+                                    part.style.color = "#55FF55"
+                                }
+                                if (a.color == "aqua"){
+                                    part.style.color = "#55FFFF"
+                                }
+                                if (a.color == "red"){
+                                    part.style.color = "#FF5555"
+                                }
+                                if (a.color == "light_purple"){
+                                    part.style.color = " #FF55FF"
+                                }
+                                if (a.color == "yellow"){
+                                    part.style.color = "#FFFF55"
+                                }
+                                if (a.color == "white"){
+                                    part.style.color = "#FFFFFF"
+                                }
+                            }
+                            return;
+                        }
+                        msg.extra.forEach(function(a){
+                            let part;
+                            if (a.bold){
+                                part = document.createElement('b');
+                            }else{
+                                part = document.createElement('a');
+                            }
+                            if (a.color != undefined){
+                                if (a.color == "black"){
+                                    part.style.color = "#000000"
+                                }
+                                if (a.color == "dark_blue"){
+                                    part.style.color = "#0000AA"
+                                }
+                                if (a.color == "dark_green"){
+                                    part.style.color = "#00AA00"
+                                }
+                                if (a.color == "dark_aqua"){
+                                    part.style.color = "#00AAAA"
+                                }
+                                if (a.color == "dark_red"){
+                                    part.style.color = "#AA0000"
+                                }
+                                if (a.color == "dark_purple"){
+                                    part.style.color = "#AA00AA"
+                                }
+                                if (a.color == "gold"){
+                                    part.style.color = "#FFAA00"
+                                }
+                                if (a.color == "gray"){
+                                    part.style.color = "#AAAAAA"
+                                }
+                                if (a.color == "dark_gray"){
+                                    part.style.color = "#555555"
+                                }
+                                if (a.color == "blue"){
+                                    part.style.color = "#5555FF"
+                                }
+                                if (a.color == "green"){
+                                    part.style.color = "#55FF55"
+                                }
+                                if (a.color == "aqua"){
+                                    part.style.color = "#55FFFF"
+                                }
+                                if (a.color == "red"){
+                                    part.style.color = "#FF5555"
+                                }
+                                if (a.color == "light_purple"){
+                                    part.style.color = " #FF55FF"
+                                }
+                                if (a.color == "yellow"){
+                                    part.style.color = "#FFFF55"
+                                }
+                                if (a.color == "white"){
+                                    part.style.color = "#FFFFFF"
+                                }
+                            }
+                            part.innerHTML = escapeInput(a.text)
+                            element.appendChild(part)
+                        })
+                        document.getElementById('chat').appendChild(element)
+                        document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
+                    }
+                }
+            }
             function render() {
                 //render blocks
                 let gl = canvas.getContext("experimental-webgl");
             }
+            const scene = new THREE.Scene();
+            document.body.addEventListener('keyup', function (e) { if (e.key == "t") { 
+                document.getElementById('chat-menu').style.display = 'inline-block';
+                document.getElementById('chat-input').focus()
+            } })
+            document.getElementById('chat-input').addEventListener('keyup', function (e) { if (e.key == "Enter") {
+                socket.send(JSON.stringify(['write','chat',{message:document.getElementById('chat-input').value}]))
+                document.getElementById('chat-input').value = ""
+            } })
         }
     </script>
     <style>
+        .message-pane {
+            /*border-radius: 10px;*/
+            padding-top: 1px;
+            width: 100%;
+            background-color: #2B2929;
+            height:25%;
+            overflow: auto
+        }
+        .message-item {
+            border-radius: 5px;
+            font-size: 20px;
+            color: white;
+            list-style: none;
+            margin-top: 2px;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+        .chat-menu {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .chat-menu-content {
+            background-color: #171717;
+            margin: 15% auto;
+            padding: 20px;
+            left:0;
+            top:0;
+            border: 1px solid #888;
+            width: 80%;
+            color: white
+        }
+
+        .chat-menu-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .chat-menu-close:hover,
+        .chat-menu-close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         body {
             background-image: url(assets/pano.png)
         }
@@ -152,7 +362,21 @@
     <a class="splash" id="proxy"></a>
     <br>
     <a class="splash" id="server"></a>
-    <canvas id="game" class="game">
+    <!--<canvas id="game" class="game"></canvas>-->
+    <div id="chat-menu" class="chat-menu">
+        <div class="chat-menu-content">
+            <bold style="font-size:30px;font-family:'Minecraft'">Chat</bold>
+            <span class="chat-menu-close"
+                onclick="document.getElementById('chat-menu').style.display = 'none'">&times;</span>
+            <br><br><br>
+            <div id="chat" class="message-pane" style="display:inline-block">
+                <!--<li class="message-item" style="font-size:20px">Test</li>
+                <li class="message-item" style="font-size:20px">Test2</li>-->
+            </div>
+            <br><br>
+            <input id="chat-input" style="width:100%;font-family:Arial, Helvetica, sans-serif" placeholder="Message">
+        </div>
+    </div>
 </body>
 
 </html>

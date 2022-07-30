@@ -32,11 +32,11 @@
         }
         function play() {
             let username = document.getElementById('username').value;
-            let proxy = document.getElementById('proxy').value;
+            let proxy = 'ws://eggcraft-server.glitch.me';
             let server = document.getElementById('server').value;
-            setCookie('username',username,100);
-            setCookie('proxy',proxy,100);
-            setCookie('server',server,100);
+            setCookie('username', username, 100);
+            setCookie('proxy', proxy, 100);
+            setCookie('server', server, 100);
             if (window.location.href.endsWith("/index.html")) {
                 window.location = window.location.href.replace('/index.html', '') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
             } else {
@@ -44,6 +44,7 @@
             }
         }
         function getCookie(cname) {
+            /*
             let name = cname + "=";
             let decodedCookie = decodeURIComponent(document.cookie);
             let ca = decodedCookie.split(';');
@@ -63,6 +64,50 @@
             if (cname == 'sprint-key'){
                 return 'Control';
             }
+            if (cname == 'crouch-key'){
+                return 'Shift';
+            }
+            if (cname == 'up-key'){
+                return 'w';
+            }
+            if (cname == 'down-key'){
+                return 's';
+            }
+            if (cname == 'left-key'){
+                return 'a';
+            }
+            if (cname == 'right-key'){
+                return 'd';
+            }
+            return "";
+            */
+            c = localStorage.getItem(cname)
+            if (c == null) {
+                if (cname == 'jappa') {
+                    return 'false';
+                }
+                if (cname == 'sprint-key') {
+                    return 'Control';
+                }
+                if (cname == 'crouch-key') {
+                    return 'Shift';
+                }
+                if (cname == 'up-key') {
+                    return 'w';
+                }
+                if (cname == 'down-key') {
+                    return 's';
+                }
+                if (cname == 'left-key') {
+                    return 'a';
+                }
+                if (cname == 'right-key') {
+                    return 'd';
+                }
+                return '';
+            }else{
+                return localStorage.getItem(cname);
+            }
         }
         function setCookie(cname, cvalue, exdays) {
             const d = new Date();
@@ -70,20 +115,44 @@
             let expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         }
-        function saveoptions(){
-
+        function saveoptions() {
+            setCookies('jappa', document.getElementById('jappa').innerHTML, 100);
+            setCookies('sprint-key', document.getElementById('jappa').innerHTML, 100);
+            setCookies('crouch-key', document.getElementById('jappa').innerHTML, 100);
+            setCookies('up-key', document.getElementById('jappa').innerHTML, 100);
+            setCookies('down-key', document.getElementById('jappa').innerHTML, 100);
+            setCookies('left-key', document.getElementById('jappa').innerHTML, 100);
+            setCookies('right-key', document.getElementById('jappa').innerHTML, 100);
         }
-        function loadoptions(){
-            document.getElementById('jappa').value = "New textures: " + getCookie('jappa');
-            document.getElementById('sprint-key').value = "Sprint Key: " + getCookie('sprint-key');
+        function loadoptions() {
+            document.getElementById('jappa').innerHTML = "New textures: " + getCookie('jappa');
+            document.getElementById('sprint-key').innerHTML = "Sprint Key: " + getCookie('sprint-key');
+            document.getElementById('crouch-key').innerHTML = "Crouch key: " + getCookie('crouch-key');
+            document.getElementById('up-key').innerHTML = "Up Key: " + getCookie('up-key');
+            document.getElementById('down-key').innerHTML = "Down Key: " + getCookie('down-key');
+            document.getElementById('left-key').innerHTML = "Left Key: " + getCookie('left-key');
+            document.getElementById('right-key').innerHTML = "Right Key: " + getCookie('right-key');
         }
         window.onload = function () {
             let funny = ['by iexist', 'mojang dont sue me', 'haha', '6004!', 'lucky!', 'collabvm', 'diamonds!', 'we beat the dragon!!', 'whats the purpose of this text again?', '6 9', '404', 'not really for demonstrational purposes', '2.0'];
             let random = Math.floor(Math.random() * (funny.length - 1));
-            document.getElementById('splash').innerHTML = funny[random];
-            document.getElementById('username').value = getCookie('username');
-            document.getElementById('proxy').value = getCookie('proxy');
-            document.getElementById('server').value = getCookie('server');
+            //document.getElementById('splash').innerHTML = funny[random];
+            //document.getElementById('username').value = getCookie('username');
+            //document.getElementById('proxy').value = getCookie('proxy');
+            //document.getElementById('server').value = getCookie('server');
+            document.getElementById('jappa').innerHTML = "New textures: " + getCookie('jappa');
+            document.getElementById('sprint-key').innerHTML = "Sprint Key: " + getCookie('sprint-key');
+            document.getElementById('crouch-key').innerHTML = "Crouch key: " + getCookie('crouch-key');
+            document.getElementById('up-key').innerHTML = "Up Key: " + getCookie('up-key');
+            document.getElementById('down-key').innerHTML = "Down Key: " + getCookie('down-key');
+            document.getElementById('left-key').innerHTML = "Left Key: " + getCookie('left-key');
+            document.getElementById('right-key').innerHTML = "Right Key: " + getCookie('right-key');
+        }
+        function detectkey(id) {
+            e = function () {
+                //aaaa
+            }
+            document.getElementById(id).addEventListener('keyup', e);
         }
     </script>
     <style>
@@ -116,6 +185,7 @@
             color: white;
             font-family: 'Minecraft'
         }
+
         .input2 {
             font-size: 30px;
             border: none;
@@ -230,12 +300,11 @@
 
 <body>
     <center>
-        <img src="assets/logo.png" onclick="alert('Easter Egg')">
+        <img src="assets/eggcraft.png" style="height:30%;width:40%">
         <br>
-        <a class="splash" id="splash"></a>
-        <br><br><br>
-        <input class="input" placeholder="Proxy (include ws:// or wss://)" id="proxy">
-        <br><br>
+        <!--<a class="splash" id="splash"></a>-->
+        <!--<input class="input" placeholder="Proxy" id="proxy">-->
+        <br>
         <input class="input" placeholder="Server Address (include port, usually 25565)" id="server">
         <br><br>
         <input class="input" placeholder="Username" id="username">
@@ -248,12 +317,12 @@
             target="_blank">Github</a>
         <a class="splash" style="font-size:25px"> | </a>
         <a class="splash" style="font-size:25px" href="https://discord.gg/Sv8RtYymk8" target="_blank">Discord</a>
-        <a class="splash" style="font-size:25px"> | </a>
+        <!--<a class="splash" style="font-size:25px"> | </a>
         <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS-Proxy"
-            target="_blank">Host proxy</a>
+            target="_blank">Host proxy</a>-->
         <a class="splash" style="font-size:25px"> | </a>
-        <a class="splash" style="font-size:25px" href="about.html" target="_blank">Learn more</a>
-        <a class="splash" style="font-size:25px"> | </a>
+        <!--<a class="splash" style="font-size:25px" href="about.html" target="_blank">Learn more</a>
+        <a class="splash" style="font-size:25px"> | </a>-->
         <a class="splash" style="font-size:25px">1.7.10 javascript client (beta)</a>
     </center>
     <div id="modal" class="modal">
@@ -261,10 +330,18 @@
             <bold style="font-size:30px;font-family:'Minecraft'">Options</bold>
             <span class="modal-close" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
             <br><br><br>
-            <button class="button2" id="jappa">New Textures: off</button>
+            <button class="button2" id="jappa" style="display:none"></button>
+            <button class="button2" id="sprint-key"></button>
             <br><br>
-            <button class="button2" id="sprint-key">Sprint Key</button>
+            <button class="button2" id="crouch-key"></button>
             <br><br>
+            <button class="button2" id="up-key"></button>
+            <br><br>
+            <button class="button2" id="down-key"></button>
+            <br><br>
+            <button class="button2" id="left-key"></button>
+            <br><br>
+            <button class="button2" id="right-key"></button>
         </div>
     </div>
 </body>
