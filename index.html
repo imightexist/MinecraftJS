@@ -34,9 +34,10 @@
             let username = document.getElementById('username').value;
             let proxy = 'ws://eggcraft-server.glitch.me';
             let server = document.getElementById('server').value;
-            setCookie('username', username, 100);
+            localStorage.setItem('username', username);
             setCookie('proxy', proxy, 100);
-            setCookie('server', server, 100);
+            localStorage.setItem('server', server);
+            localStorage.setItem('password',document.getElementById('password').value)
             if (window.location.href.endsWith("/index.html")) {
                 window.location = window.location.href.replace('/index.html', '') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
             } else {
@@ -147,6 +148,9 @@
             document.getElementById('down-key').innerHTML = "Down Key: " + getCookie('down-key');
             document.getElementById('left-key').innerHTML = "Left Key: " + getCookie('left-key');
             document.getElementById('right-key').innerHTML = "Right Key: " + getCookie('right-key');
+            document.getElementById('password').value = getCookie('password')
+            document.getElementById('username').value = getCookie('username')
+            document.getElementById('server').value = getCookie('server')
         }
         function detectkey(id) {
             e = function () {
@@ -176,9 +180,9 @@
         }
 
         .input {
-            height: 100px;
+            height: 72px;
             width: 1100px;
-            font-size: 45px;
+            font-size: 40px;
             border: none;
             background-color: #000314;
             border-color: #262629;
@@ -301,13 +305,15 @@
 <body>
     <center>
         <img src="assets/eggcraft.png" style="height:30%;width:40%">
-        <br>
+        
         <!--<a class="splash" id="splash"></a>-->
         <!--<input class="input" placeholder="Proxy" id="proxy">-->
         <br>
         <input class="input" placeholder="Server Address (include port, usually 25565)" id="server">
         <br><br>
-        <input class="input" placeholder="Username" id="username">
+        <input class="input" placeholder="Username (use email for online mode)" id="username" type="username">
+        <br><br>
+        <input class="input" placeholder="Password (for online mode)" id="password" type="password">
         <br><br><br>
         <button class="button" onclick="play()">Play</button>
         <br><br>
@@ -316,14 +322,14 @@
         <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS"
             target="_blank">Github</a>
         <a class="splash" style="font-size:25px"> | </a>
-        <a class="splash" style="font-size:25px" href="https://discord.gg/Sv8RtYymk8" target="_blank">Discord</a>
+        <a class="splash" style="font-size:25px" href="https://discord.gg/uXqSB4FYBA" target="_blank">Discord</a>
         <!--<a class="splash" style="font-size:25px"> | </a>
         <a class="splash" style="font-size:25px" href="https://github.com/imightexist/MinecraftJS-Proxy"
             target="_blank">Host proxy</a>-->
         <a class="splash" style="font-size:25px"> | </a>
         <!--<a class="splash" style="font-size:25px" href="about.html" target="_blank">Learn more</a>
         <a class="splash" style="font-size:25px"> | </a>-->
-        <a class="splash" style="font-size:25px">1.7.10 javascript client (beta)</a>
+        <a class="splash" style="font-size:25px">1.8.9 Client (beta 0.2)</a>
     </center>
     <div id="modal" class="modal">
         <div class="modal-content">

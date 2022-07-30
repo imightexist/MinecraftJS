@@ -52,7 +52,12 @@
             document.getElementById('server').innerHTML = "Server IP: " + params.get('server');
             let socket = new WebSocket(params.get('proxy'));
             socket.onopen = function () {
-                socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.7.10' }]))
+                if (localStorage.getItem('password') != undefined){
+                    socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.8.9' }]))
+                }else{
+                    socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.8.9', password:localStorage.getItem('password'),auth:'microsoft'}]))
+                }
+                
             }
             socket.onmessage = function (f) {
                 if (messages != 30) { console.log(JSON.parse(f.data)); messages++ }
