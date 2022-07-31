@@ -49,7 +49,7 @@
             }*/
             canvas = document.getElementById('game');
             document.getElementById('proxy').innerHTML = "Proxy: " + params.get('proxy');
-            document.getElementById('server').innerHTML = "Server IP: " + params.get('server');
+            document.getElementById('server').innerHTML = "Server IP: " + localStorage.getItem('server');
             let socket = new WebSocket(params.get('proxy'));
             socket.onopen = function () {
                 if (localStorage.getItem('password') != undefined){
