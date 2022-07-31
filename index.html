@@ -39,9 +39,9 @@
             localStorage.setItem('server', server);
             localStorage.setItem('password',document.getElementById('password').value)
             if (window.location.href.endsWith("/index.html")) {
-                window.location = window.location.href.replace('/index.html', '') + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
+                window.location = window.location.href.replace('/index.html', '') + "/game.html?proxy=" + proxy;
             } else {
-                window.location = window.location.href + "/game.html?username=" + username + "&server=" + server + "&proxy=" + proxy;
+                window.location = window.location.href + "/game.html?proxy=" + proxy;
             }
         }
         function getCookie(cname) {

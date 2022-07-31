@@ -53,9 +53,9 @@
             let socket = new WebSocket(params.get('proxy'));
             socket.onopen = function () {
                 if (localStorage.getItem('password') != undefined){
-                    socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.8.9' }]))
+                    socket.send(JSON.stringify(['play', { host: localStorage.getItem('server').split(":")[0], port: parseInt(localStorage.getItem('server').split(":")[1]), username: localStorage.getItem('username'), version: '1.8.9' }]))
                 }else{
-                    socket.send(JSON.stringify(['play', { host: params.get('server').split(":")[0], port: parseInt(params.get('server').split(":")[1]), username: params.get('username'), version: '1.8.9', password:localStorage.getItem('password'),auth:'microsoft'}]))
+                    socket.send(JSON.stringify(['play', { host: localStorage.getItem('server').split(":")[0], port: parseInt(localStorage.getItem('server').split(":")[1]), username: localStorage.getItem('username'), version: '1.8.9', password:localStorage.getItem('password'),auth:'microsoft'}]))
                 }
                 
             }
@@ -379,7 +379,7 @@
                 <li class="message-item" style="font-size:20px">Test2</li>-->
             </div>
             <br><br>
-            <input id="chat-input" style="width:100%;font-family:Arial, Helvetica, sans-serif" placeholder="Message">
+            <input id="chat-input" style="width:100%;font-family:Arial, Helvetica, sans-serif;background-color: #000314;border-color: #262629;color: white;" placeholder="Message">
         </div>
     </div>
 </body>
