@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
-    <title>MinecraftJS | Game</title>
+    <title>EggCraft | Game</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="assets/three.js"></script>
-    <script>
+    <script src="assets/en-us.js"></script>
+    <script src="assets/gltf.js" type="module/js"></script>
+    <script type="module">
+        import { GLTFLoader } from './assets/gltf.js'
         function decodeCommand(cypher) {
             var sections = [];
             var bump = 0;
@@ -52,140 +55,146 @@
             document.getElementById('server').innerHTML = "Server IP: " + localStorage.getItem('server');
             let socket = new WebSocket(params.get('proxy'));
             socket.onopen = function () {
-                if (localStorage.getItem('password') != undefined){
+                if (localStorage.getItem('password') != undefined) {
                     socket.send(JSON.stringify(['play', { host: localStorage.getItem('server').split(":")[0], port: parseInt(localStorage.getItem('server').split(":")[1]), username: localStorage.getItem('username'), version: '1.8.9' }]))
-                }else{
-                    socket.send(JSON.stringify(['play', { host: localStorage.getItem('server').split(":")[0], port: parseInt(localStorage.getItem('server').split(":")[1]), username: localStorage.getItem('username'), version: '1.8.9', password:localStorage.getItem('password'),auth:'microsoft'}]))
+                } else {
+                    socket.send(JSON.stringify(['play', { host: localStorage.getItem('server').split(":")[0], port: parseInt(localStorage.getItem('server').split(":")[1]), username: localStorage.getItem('username'), version: '1.8.9', password: localStorage.getItem('password'), auth: 'microsoft' }]))
                 }
-                
+
             }
             socket.onmessage = function (f) {
                 if (messages != 30) { console.log(JSON.parse(f.data)); messages++ }
                 command = JSON.parse(f.data);
-                if (command[0] == "read"){
-                    if (command[2].name == "chat"){
+                if (command[0] == "read") {
+                    if (command[2].name == "chat") {
                         msg = JSON.parse(command[1].message)
                         console.log(JSON.parse(command[1].message))
                         element = document.createElement('li');
                         element.classList.add("message-item");
-                        if (msg.extra == undefined){
+                        if (msg.extra == undefined) {
                             let part;
                             let a = msg;
-                            if (msg.italic){
+                            if (msg.italic) {
                                 part = document.createElement('i')
-                            }else{
+                            } else {
                                 part = document.createElement('a')
                             }
-                            if (a.color != undefined){
-                                if (a.color == "black"){
+                            if (a.color != undefined) {
+                                if (a.color == "black") {
                                     part.style.color = "#000000"
                                 }
-                                if (a.color == "dark_blue"){
+                                if (a.color == "dark_blue") {
                                     part.style.color = "#0000AA"
                                 }
-                                if (a.color == "dark_green"){
+                                if (a.color == "dark_green") {
                                     part.style.color = "#00AA00"
                                 }
-                                if (a.color == "dark_aqua"){
+                                if (a.color == "dark_aqua") {
                                     part.style.color = "#00AAAA"
                                 }
-                                if (a.color == "dark_red"){
+                                if (a.color == "dark_red") {
                                     part.style.color = "#AA0000"
                                 }
-                                if (a.color == "dark_purple"){
+                                if (a.color == "dark_purple") {
                                     part.style.color = "#AA00AA"
                                 }
-                                if (a.color == "gold"){
+                                if (a.color == "gold") {
                                     part.style.color = "#FFAA00"
                                 }
-                                if (a.color == "gray"){
+                                if (a.color == "gray") {
                                     part.style.color = "#AAAAAA"
                                 }
-                                if (a.color == "dark_gray"){
+                                if (a.color == "dark_gray") {
                                     part.style.color = "#555555"
                                 }
-                                if (a.color == "blue"){
+                                if (a.color == "blue") {
                                     part.style.color = "#5555FF"
                                 }
-                                if (a.color == "green"){
+                                if (a.color == "green") {
                                     part.style.color = "#55FF55"
                                 }
-                                if (a.color == "aqua"){
+                                if (a.color == "aqua") {
                                     part.style.color = "#55FFFF"
                                 }
-                                if (a.color == "red"){
+                                if (a.color == "red") {
                                     part.style.color = "#FF5555"
                                 }
-                                if (a.color == "light_purple"){
+                                if (a.color == "light_purple") {
                                     part.style.color = " #FF55FF"
                                 }
-                                if (a.color == "yellow"){
+                                if (a.color == "yellow") {
                                     part.style.color = "#FFFF55"
                                 }
-                                if (a.color == "white"){
+                                if (a.color == "white") {
                                     part.style.color = "#FFFFFF"
                                 }
                             }
+                            part.innerHTML = getLangArgs(msg.translate, msg.with)
+                            element.appendChild(part)
                             return;
                         }
-                        msg.extra.forEach(function(a){
+                        msg.extra.forEach(function (a) {
                             let part;
-                            if (a.bold){
+                            if (a.bold == true) {
                                 part = document.createElement('b');
-                            }else{
+                            } else {
                                 part = document.createElement('a');
                             }
-                            if (a.color != undefined){
-                                if (a.color == "black"){
+                            if (a.color != undefined) {
+                                if (a.color == "black") {
                                     part.style.color = "#000000"
                                 }
-                                if (a.color == "dark_blue"){
+                                if (a.color == "dark_blue") {
                                     part.style.color = "#0000AA"
                                 }
-                                if (a.color == "dark_green"){
+                                if (a.color == "dark_green") {
                                     part.style.color = "#00AA00"
                                 }
-                                if (a.color == "dark_aqua"){
+                                if (a.color == "dark_aqua") {
                                     part.style.color = "#00AAAA"
                                 }
-                                if (a.color == "dark_red"){
+                                if (a.color == "dark_red") {
                                     part.style.color = "#AA0000"
                                 }
-                                if (a.color == "dark_purple"){
+                                if (a.color == "dark_purple") {
                                     part.style.color = "#AA00AA"
                                 }
-                                if (a.color == "gold"){
+                                if (a.color == "gold") {
                                     part.style.color = "#FFAA00"
                                 }
-                                if (a.color == "gray"){
+                                if (a.color == "gray") {
                                     part.style.color = "#AAAAAA"
                                 }
-                                if (a.color == "dark_gray"){
+                                if (a.color == "dark_gray") {
                                     part.style.color = "#555555"
                                 }
-                                if (a.color == "blue"){
+                                if (a.color == "blue") {
                                     part.style.color = "#5555FF"
                                 }
-                                if (a.color == "green"){
+                                if (a.color == "green") {
                                     part.style.color = "#55FF55"
                                 }
-                                if (a.color == "aqua"){
+                                if (a.color == "aqua") {
                                     part.style.color = "#55FFFF"
                                 }
-                                if (a.color == "red"){
+                                if (a.color == "red") {
                                     part.style.color = "#FF5555"
                                 }
-                                if (a.color == "light_purple"){
+                                if (a.color == "light_purple") {
                                     part.style.color = " #FF55FF"
                                 }
-                                if (a.color == "yellow"){
+                                if (a.color == "yellow") {
                                     part.style.color = "#FFFF55"
                                 }
-                                if (a.color == "white"){
+                                if (a.color == "white") {
                                     part.style.color = "#FFFFFF"
                                 }
                             }
-                            part.innerHTML = escapeInput(a.text)
+                            if (typeof a == "string") {
+                                part.innerHTML = escapeInput(a)
+                            } else {
+                                part.innerHTML = escapeInput(a.text)
+                            }
                             element.appendChild(part)
                         })
                         document.getElementById('chat').appendChild(element)
@@ -193,19 +202,39 @@
                     }
                 }
             }
-            function render() {
-                //render blocks
-                let gl = canvas.getContext("experimental-webgl");
-            }
+
             const scene = new THREE.Scene();
-            document.body.addEventListener('keyup', function (e) { if (e.key == "t") { 
-                document.getElementById('chat-menu').style.display = 'inline-block';
-                document.getElementById('chat-input').focus()
-            } })
-            document.getElementById('chat-input').addEventListener('keyup', function (e) { if (e.key == "Enter") {
-                socket.send(JSON.stringify(['write','chat',{message:document.getElementById('chat-input').value}]))
-                document.getElementById('chat-input').value = ""
-            } })
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            const loader = new GLTFLoader();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('game').appendChild(renderer.domElement);
+            renderer.domElement.display = "inline-block"
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+            loader.load('assets/blocks/grass_block.gltf', function (gltf) {
+                scene.add(gltf.scene);
+            }, undefined, function (error) {
+                console.error(error);
+            });
+            //render.domElement.style.display = "inline-block"
+
+            document.addEventListener('keyup', function (e) {
+                if (e.key == "t") {
+                    document.getElementById('chat-menu').style.display = 'inline-block';
+                    document.getElementById('chat-input').focus()
+                    //console.log("t")
+                }
+            })
+            document.getElementById('chat-input').addEventListener('keyup', function (e) {
+                if (e.key == "Enter") {
+                    socket.send(JSON.stringify(['write', 'chat', { message: document.getElementById('chat-input').value }]))
+                    document.getElementById('chat-input').value = ""
+                }
+            })
         }
     </script>
     <style>
@@ -214,17 +243,19 @@
             padding-top: 1px;
             width: 100%;
             background-color: #2B2929;
-            height:25%;
+            height: 25%;
             overflow: auto
         }
+
         .message-item {
             border-radius: 5px;
             font-size: 20px;
             color: white;
             list-style: none;
             margin-top: 2px;
-            font-family:Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
+
         .chat-menu {
             display: none;
             position: fixed;
@@ -242,8 +273,8 @@
             background-color: #171717;
             margin: 15% auto;
             padding: 20px;
-            left:0;
-            top:0;
+            left: 0;
+            top: 0;
             border: 1px solid #888;
             width: 80%;
             color: white
@@ -361,14 +392,15 @@
 </head>
 
 <body>
-    <a class="splash">If you see this the game hasn't loaded yet. Here's some info in case it didn't load already. Make
-        sure the server has online mode off.</a>
+    <div id="game" class="game"></div>
+    <a class="splash">If you see this the game hasn't loaded yet. Here's some info in case it didn't load already. Press
+        T to open chat.</a>
     <br><br>
     <a class="splash" id="proxy"></a>
     <br>
     <a class="splash" id="server"></a>
     <!--<canvas id="game" class="game"></canvas>-->
-    <div id="chat-menu" class="chat-menu">
+    <div id="chat-menu" class="chat-menu" style="z-index:4">
         <div class="chat-menu-content">
             <bold style="font-size:30px;font-family:'Minecraft'">Chat</bold>
             <span class="chat-menu-close"
@@ -379,7 +411,9 @@
                 <li class="message-item" style="font-size:20px">Test2</li>-->
             </div>
             <br><br>
-            <input id="chat-input" style="width:100%;font-family:Arial, Helvetica, sans-serif;background-color: #000314;border-color: #262629;color: white;" placeholder="Message">
+            <input id="chat-input"
+                style="width:100%;font-family:Arial, Helvetica, sans-serif;background-color: #000314;border-color: #262629;color: white;"
+                placeholder="Message">
         </div>
     </div>
 </body>
